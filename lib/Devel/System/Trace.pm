@@ -5,7 +5,7 @@ use warnings;
 use vars qw($VERSION $AUTHORITY);
 use File::Temp 'tempfile';
 
-$VERSION   = '0.0.1';
+$VERSION   = '0.0.2';
 $AUTHORITY = 'cpan:SUKRIA';
 
 my $package = 'Devel::System::Trace';
@@ -32,7 +32,7 @@ sub import {
 
     # call the appropriate import function according to Perl's version
     ($] >= 5.010)
-        ? _import_5_10(@_)
+        ? _import_for_5_10(@_)
         : _import_default(@_);
 
     # redefine the "system" keyword
@@ -72,7 +72,7 @@ sub _unimport_default {
 sub _is_active {
     # retreive the hinthash in Perl 5.10
     if ($] >= 5.010) {
-        my $hinthash = (caller(1))[10];
+        my $hinthash = (caller(2))[10];
         return $hinthash->{$package};
     }
     # is the package active for calling module? 
